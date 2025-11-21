@@ -1,19 +1,58 @@
+'use client'
+import {useState, useEffect, useRef} from "react";
 import { Mic } from "lucide-react";
 export default function Home(){
-  return(
-    <div className="w-screen h-screen bg-gray-900 flex flex-col justify-end items-center  pb-6">
-      <div className="w-300 h-300 bg-gray-900 flex flex-col justify-end items-center pb-28 rounded-2xl " >
-        <p className="text-2xl pb-48 text-gray-300 ">Hello what can I help you with today?</p>
-        <div className="relative flex items-center">
-          <span className="w-10 h-10 rounded-full hover:bg-gray-700 absolute left-6 text-gray-400 text-3xl flex items-center justify-center">+</span>
-          <div className="w-10 h-10 rounded-full hover:bg-gray-700 absolute right-6 text-gray-400 text-3xl flex items-center justify-center">
-          <Mic className="w-6 h-6  group-hover:text-gray text-gray-400"/>
-          </div>
-          <input className="pl-18 pr-16 focus:outline-none bg-gray-800 border-gray  w-200 rounded-4xl text-left text-gray-400 flex items-center justify-center text-lg p-5" placeholder="Ask anything"  ></input>
+
+  const[input, setInput]= useState("");
+  const[messages, setMessages]= useState([
+    {id: 1, role: "assistant", content: "Hello what can I help you with today?"},
+    {id: 2, role: "user", content: "hello"}
+  ]);
+  const endMessagesRef = useRef<HTMLDivElement>(null);
+  useEffect(()=>{endMessagesRef.current?.scrollIntoView({behavior: "smooth"})}, [messages]);
+  const sendMessage = ()=>{
+    if(input.trim()==="") return;
+    const newMessage ={
+      id: Date.now(),
+      role: "user",
+      content: input
+    };
+
+
+    setMessages(prev=>[...prev, newMessage]);
+    setInput("");
+  };
+
+ return(
+    <div className="w-screen h-screen bg-gray-900 flex flex-col">
+      <div className="flex-1 overflow-y-auto px-4 pt-8 pb-20">
+      {messages.map((msg)=>(
+        <div key={msg.id} className={`flex mb-6 ${msg.role==="user" ? "justify-end" : "justify-start"}`}
+>      
+          <div className={`max-w-xs md:max-w-md px-5 py-3 rounded-3xl ${msg.role==="user" ? "bg-blue-600 text-white" : "bf-gray-800 text-gray-100"}`}>
+            {msg.content}
+            </div>
         </div>
-        
-      </div>
+       ))}
     </div>
-   
-  );
-}
+    <div ref= {endMessagesRef}/>
+       <div className ="px-4 pb-8">
+         <div className = " relative flex items-center max-w-3xl mx-auto">
+          <span className="absolute left-4 text-gray-400 text-2xl cursor-pointer hover:bg-gray-700 w-10 h-10 ronded-fll">
+            +
+          </span>
+          <input 
+            value ={input}
+            onChange={(e)=>setInput(e.target.value)}
+            onKeyDown={(e)=>e.key === "Enter" && !e.shiftKey && sendMessage()}
+            placeholder="Ask anything"
+            className="w-full bg-gray-800 text-gray-100 rounded-full pl-14 pr-16 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div className="absolute right-4 cursor-pointer">
+            <Mic className="text-gray-400 hover:text-gray-200"/>
+          </div>
+         </div>
+       </div>
+    </div>
+  )
+ };
