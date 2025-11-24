@@ -38,7 +38,7 @@ export default function Home(){
     <div ref= {endMessagesRef}/>
        <div className ="px-4 pb-8">
          <div className = " relative flex items-center max-w-3xl mx-auto">
-          <span className="absolute left-4 text-gray-400 text-2xl cursor-pointer hover:bg-gray-700 w-10 h-10 ronded-fll">
+          <span className="absolute left-4 text-gray-400 text-2xl cursor-pointer hover:bg-gray-700 w-10 h-10  grid place-items-center rounded-full">
             +
           </span>
           <input 
@@ -46,13 +46,13 @@ export default function Home(){
             onChange={(e)=>setInput(e.target.value)}
             onKeyDown={(e)=>e.key === "Enter" && !e.shiftKey && sendMessage()}
             placeholder="Ask anything"
-            className="w-full bg-gray-800 text-gray-100 rounded-full pl-14 pr-16 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-gray-800 text-gray-100 rounded-full pl-16 pr-16 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <div className="absolute right-4 cursor-pointer">
-            <Mic className="text-gray-400 hover:text-gray-200"/>
+          <div className="absolute right-4 cursor-pointer grid place-items-center hover:bg-gray-700 w-10 h-10 rounded-full">
+            <Mic className="text-gray-400"/>
           </div>
          </div>
        </div>
     </div>
   )
- };
+ };//absolute right-4 grid place-items-center w-10 h-10 text-gray-400 hover:bg-gray-700 rounded-full cursor-pointer transition-colors
